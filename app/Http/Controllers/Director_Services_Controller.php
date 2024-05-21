@@ -306,4 +306,23 @@ class Director_Services_Controller extends Controller
    
     }
     }
+
+    public function getMostActiveEmployees()
+    {
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        $mostActiveEmployees = Pointage::select('id_employee', DB::raw('count(*) as total_pointages'))
+            ->whereMonth('date_pointage', $currentMonth)
+            ->whereYear('date_pointage', $currentYear)
+            ->groupBy('id_employee')
+            ->orderBy('total_pointages', 'desc')
+            ->take(5)
+            ->get();
+
+        return response()->json([
+            'message' => 'Most active employees retrieved successfully',
+            'data' => $mostActiveEmployees
+        ], 200);
+    }
 }

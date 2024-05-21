@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('localiastion');
             $table->string('titel');
             $table->text('buteDeplacment');
+            $table->text('debut');
+            $table->text('arriver');
             $table->boolean('is_accepte')->default(false);
             $table->foreignId('id_charges')->nullable()->constrained('charges');
             $table->string('localisation_verify')->nullable();
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_deolacment');
+        Schema::dropIfExists('order_deplacments');
     }
 };

@@ -40,13 +40,13 @@ Route::post('/getEmployeeLeave', [Director_Services_Controller::class, 'getEmplo
 Route::post('/AddProject', [Director_Services_Controller::class, 'AddProject']);
 Route::post('/fetchProjects', [Director_Services_Controller::class, 'fetchProjects']);
 Route::post('/DeleteProject', [Director_Services_Controller::class, 'DeleteProject']);
+Route::post('/getMostActiveEmployees', [Director_Services_Controller::class, 'getMostActiveEmployees']);
 
 //Pointage
 Route::post('/pointage', [Emplyee_Services_Controller::class, 'pointage']);
 Route::post('/updatePauseExit', [Emplyee_Services_Controller::class, 'updatePauseExit']);
 Route::post('/updatePauseEntry', [Emplyee_Services_Controller::class, 'updatePauseEntry']);
 Route::post('/TimeExite', [Emplyee_Services_Controller::class, 'TimeExite']);
-
 // Route::post('/AddVacation', [VacationController::class, 'AddVacation']);
 
 
@@ -68,6 +68,10 @@ Route::post('/acceptOrderDeplacment', [OrderDeplacmentController::class, 'accept
 Route::post('/DeleteOrderDeplacment', [OrderDeplacmentController::class, 'DeleteOrderDeplacment']);
 Route::post('/updateLocalisationVerify', [OrderDeplacmentController::class, 'updateLocalisationVerify']);
 Route::post('/FineMession', [OrderDeplacmentController::class, 'FineMession']);
+Route::post('/countPendingOrders', [OrderDeplacmentController::class, 'countPendingOrders']);
+Route::post('/OrdersAccepter', [OrderDeplacmentController::class, 'OrdersAccepter']);
+Route::post('/OrdersFini', [OrderDeplacmentController::class, 'OrdersFini']);
+Route::post('/getOrderStatistics', [OrderDeplacmentController::class, 'getOrderStatistics']);
 
 
 
