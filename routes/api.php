@@ -9,6 +9,7 @@ use App\Http\Controllers\VacationController;
 use App\Http\Controllers\OrderDeplacmentController;
 use App\Http\Controllers\TimeTrackingController;
 use App\Http\Controllers\SentFeuilleController;
+use App\Http\Controllers\TimesheetController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -69,7 +70,7 @@ Route::post('/updateLocalisationVerify', [OrderDeplacmentController::class, 'upd
 Route::post('/FineMession', [OrderDeplacmentController::class, 'FineMession']);
 
 
-
+//weklly Timesheet
 Route::post('/save-time-data', [TimeTrackingController::class, 'saveTimeData']);
 Route::get('/projects', [TimeTrackingController::class, 'getProjects']);
 Route::get('/get-total-regular-time', [TimeTrackingController::class, 'getTotalRegularTime']);
@@ -77,3 +78,10 @@ Route::get('/sum_regular', [TimeTrackingController::class, 'TotalRegularTime']);
 Route::delete('/delete_project', [TimeTrackingController::class, 'deleteProject']);
 Route::post('/sent-feuille', [SentFeuilleController::class, 'store']);
 Route::get('check-feuille', [SentFeuilleController::class, 'checkFeuille']);
+
+
+
+//Daily Timesheet
+Route::post('/savetimesheets', [TimesheetController::class, 'saveTimesheet']);
+Route::post('/sentTimesheet', [TimesheetController::class, 'sentTimesheet']);
+Route::post('/checksent', [TimesheetController::class, 'checkTimesheetStatus']);
