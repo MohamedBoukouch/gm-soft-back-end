@@ -85,3 +85,5 @@ Route::get('check-feuille', [SentFeuilleController::class, 'checkFeuille']);
 Route::post('/savetimesheets', [TimesheetController::class, 'saveTimesheet']);
 Route::post('/sentTimesheet', [TimesheetController::class, 'sentTimesheet']);
 Route::post('/checksent', [TimesheetController::class, 'checkTimesheetStatus']);
+Route::get('/checksentRH', [TimesheetController::class, 'checkTimesheetStatus']);
+Route::post('/fetchTimesheetDetail', [TimesheetController::class, 'fetchTimesheetDetail']);
