@@ -84,7 +84,19 @@ class VacationController extends Controller
         // Return a JSON response
         return response()->json(['vacations' => $vacations], 200);
     }
-    
+    public function fetchVacationDetails($id)
+    {
+        try {
+            // Find the vacation by ID
+            $vacation = Vacation::findOrFail($id);
+
+            // Return the vacation details
+            return response()->json($vacation);
+        } catch (\Exception $e) {
+            // Handle any errors that occur
+            return response()->json(['error' => 'Vacation not found'], 404);
+        }
+    }
 
 
     //DROP VACATION for Employee
@@ -176,6 +188,8 @@ public function fetchUserByEmployeeId($userId)
     }
 
 
+
+
 // public function fetchUserByEmployeeId($employeeId)
 //     {
 //         try {
@@ -215,4 +229,26 @@ public function fetchUserByEmployeeId($userId)
     //     // Return the user data
     //     return response()->json($user);
     // }
+    // In VacationController.php
+public function getPendingVacationRequests()
+{
+    $requests = Vacation::where('status', 'pending')->get();
+    return response()->json(['requests' => $requests]);
+}
+
+public function approveVacationRequest($requestId)
+{
+    $request = Vacation::findOrFail($requestId);
+    $request->status = 'approved';
+    $request->save();
+    return response()->json(['message' => 'Request approved successfully']);
+}
+
+public function rejectVacationRequest($requestId)
+{
+    $request = Vacation::findOrFail($requestId);
+    $request->status = 'rejected';
+    $request->save();
+    return response()->json(['message' => 'Request rejected successfully']);
+}
 }

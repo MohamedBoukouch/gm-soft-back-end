@@ -10,38 +10,45 @@ use Illuminate\Support\Facades\Log; // Import Log facade for logging
 class TimesheetController extends Controller
 {
     public function sentTimesheet(Request $request)
-    {
-        try {
-            $validatedData = $request->validate([
-                'user_id' => 'required|integer',
-                'date' => 'required|date',
-                'start_time' => 'nullable|date_format:H:i',
-                'end_time' => 'nullable|date_format:H:i',
-                'addhours' => 'nullable|integer',
-                'comment' => 'nullable|string',
-                'tasks_pauses' => 'required|array',
-                'tasks_pauses.*.start_time' => 'required|date_format:H:i',
-                'tasks_pauses.*.end_time' => 'required|date_format:H:i',
-                'tasks_pauses.*.type' => 'required|string|max:20',
-                'tasks_pauses.*.note' => 'nullable|string',
-                'tasks_pauses.*.project_name' => 'nullable|string',
-            ]);
+{
+    try {
+        $validatedData = $request->validate([
+            'user_id' => 'required|integer',
+            'date' => 'required|date',
+            'start_time' => 'nullable|date_format:H:i',
+            'end_time' => 'nullable|date_format:H:i',
+            'addhours' => 'nullable|integer',
+            'comment' => 'nullable|string',
+            'tasks_pauses' => 'required|array',
+            'tasks_pauses.*.start_time' => 'required|date_format:H:i',
+            'tasks_pauses.*.end_time' => 'required|date_format:H:i',
+            'tasks_pauses.*.type' => 'required|string|max:20',
+            'tasks_pauses.*.note' => 'nullable|string',
+            'tasks_pauses.*.project_name' => 'nullable|string',
+        ]);
 
-            $timesheet = Timesheet::create(array_merge($validatedData, ['sent' => true]));
+        // Parse addhours as a duration
+        $addhoursDuration = now()->startOfDay()->addHours($validatedData['addhours']);
 
-            foreach ($validatedData['tasks_pauses'] as $taskPauseData) {
-                TasksPause::create(array_merge($taskPauseData, ['timesheet_id' => $timesheet->id]));
-            }
+        // Replace addhours with the duration
+        $validatedData['addhours'] = $addhoursDuration;
 
-            Log::info('Timesheet saved successfully');
+        $timesheet = Timesheet::create(array_merge($validatedData, ['sent' => true]));
 
-            return response()->json(['message' => 'Timesheet saved successfully'], 201);
-        } catch (\Exception $e) {
-            Log::error('Error saving timesheet: ' . $e->getMessage());
-
-            return response()->json(['error' => 'Failed to save timesheet'], 500);
+        foreach ($validatedData['tasks_pauses'] as $taskPauseData) {
+            TasksPause::create(array_merge($taskPauseData, ['timesheet_id' => $timesheet->id]));
         }
+
+        Log::info('Timesheet saved successfully');
+
+        return response()->json(['message' => 'Timesheet saved successfully'], 201);
+    } catch (\Exception $e) {
+        Log::error('Error saving timesheet: ' . $e->getMessage());
+
+        return response()->json(['error' => 'Failed to save timesheet'], 500);
     }
+}
+
 
     public function saveTimesheet(Request $request)
     {

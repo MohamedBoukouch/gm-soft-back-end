@@ -59,6 +59,8 @@ Route::post('/TimeExite', [Emplyee_Services_Controller::class, 'TimeExite']);
 Route::post('/AddVacation', [VacationController::class, 'AddVacation']);
 Route::post('/employeeVacations', [VacationController::class, 'employeeVacations']);
 Route::post('/updateVacation', [VacationController::class, 'updateVacation']);
+Route::get('/employeVacations', [VacationController::class, 'employeeVacations']);
+Route::get('/vacations/{id}', [VacationController::class, 'fetchVacationDetails']);
 
 
 
@@ -124,17 +126,6 @@ Route::delete('/deleteInvoice/{id}', [ResourceController::class, 'deleteInvoice'
 
 
 
-//weklly Timesheet
-Route::post('/save-time-data', [TimeTrackingController::class, 'saveTimeData']);
-Route::get('/projects', [TimeTrackingController::class, 'getProjects']);
-Route::get('/get-total-regular-time', [TimeTrackingController::class, 'getTotalRegularTime']);
-Route::get('/sum_regular', [TimeTrackingController::class, 'TotalRegularTime']);
-Route::delete('/delete_project', [TimeTrackingController::class, 'deleteProject']);
-Route::post('/sent-feuille', [SentFeuilleController::class, 'store']);
-Route::get('check-feuille', [SentFeuilleController::class, 'checkFeuille']);
-
-
-
 //Daily Timesheet
 Route::post('/savetimesheets', [TimesheetController::class, 'saveTimesheet']);
 Route::post('/sentTimesheet', [TimesheetController::class, 'sentTimesheet']);
@@ -151,3 +142,14 @@ Route::post('/stopTracking/{trackingId}', [TrackingController::class, 'stopTrack
 Route::post('/updateTrackingRemarks/{trackingId}', [TrackingController::class, 'updateTrackingRemarks']);
 Route::post('/startPause/{trackingId}', [TrackingController::class, 'startPause']);
 Route::post('/endPause/{trackingId}', [TrackingController::class, 'endPause']);
+
+
+
+
+//dashboard
+Route::get('/order-stats', [OrderDeplacmentController::class, 'getOrderStats']);
+Route::get('/vacation-requests', [VacationController::class, 'getPendingVacationRequests']);
+Route::post('/vacation-requests/{requestId}/approve', [VacationController::class, 'approveVacationRequest']);
+Route::post('/vacation-requests/{requestId}/reject', [VacationController::class, 'rejectVacationRequest']);
+Route::post('/getEmployeeStats', [Director_Services_Controller::class, 'getEmployeeStats']);
+Route::get('/projects', [Director_Services_Controller::class, 'getProjects']);

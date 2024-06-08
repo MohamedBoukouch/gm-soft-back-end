@@ -344,4 +344,3 @@ public function fetchAuthenticatedUserData($userId)
     }
 }
 
-

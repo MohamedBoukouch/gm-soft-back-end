@@ -44,6 +44,23 @@ class OrderDeplacmentController extends Controller
         // Return a response
         return response()->json(['message' => 'OrderDeplacment created successfully'], 201);
     }
+    // In OrderDeploymentController.php
+public function getOrderStats()
+{
+    $pendingOrders = OrderDeplacment::where('is_accepte', false)->count();
+    $acceptedOrders = OrderDeplacment::where('is_accepte', true)->count();
+    $finishedOrders = OrderDeplacment::where('fine_mission', true)->count();
+    $notAcceptedOrders = OrderDeplacment::where('is_accepte', false)->where('fine_mission', false)->count();
+    $verifiedOrders = OrderDeplacment::where('localisation_verify', true)->count();
+
+    return response()->json([
+        'pendingOrders' => $pendingOrders,
+        'acceptedOrders' => $acceptedOrders,
+        'finishedOrders' => $finishedOrders,
+        'notAcceptedOrders' => $notAcceptedOrders,
+        'verifiedOrders' => $verifiedOrders,
+    ]);
+}
 
     //FETCH ORDER DEPLACMENT
 
