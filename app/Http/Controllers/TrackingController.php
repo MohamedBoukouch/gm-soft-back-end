@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tracking;
-use App\Models\Project;
+// use App\Models\Tracking;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
@@ -54,6 +54,7 @@ class TrackingController extends Controller
             }
 
             $tracking->pause_start_time = now();
+            $tracking->pause_end_time = null; // Add this line
             $tracking->status = 'Paused';
             $tracking->save();
 
@@ -77,7 +78,8 @@ class TrackingController extends Controller
 
             $pauseDuration = now()->diffInSeconds($tracking->pause_start_time);
             $tracking->total_pause_hours = $tracking->total_pause_hours + ($pauseDuration / 3600);
-            $tracking->pause_start_time = null;
+           
+            $tracking->pause_end_time = now(); // Add this line
             $tracking->status = 'Tracking';
             $tracking->save();
 
@@ -168,22 +170,22 @@ class TrackingController extends Controller
     }
 
     // Method to fetch projects
-    public function fetchProjects(Request $request)
-    {
-        Log::info('Received fetchProjects request', $request->all());
+    // public function fetchProjects(Request $request)
+    // {
+    //     Log::info('Received fetchProjects request', $request->all());
 
-        $request->validate([
-            'company_name' => 'required|string',
-        ]);
+    //     $request->validate([
+    //         'company_name' => 'required|string',
+    //     ]);
 
-        try {
-            $projects = Project::where('company_name', $request->company_name)->get();
-            return response()->json(['projects' => $projects], 200);
-        } catch (\Exception $e) {
-            Log::error('Error fetching projects: ', ['error' => $e->getMessage()]);
-            return response()->json(['message' => 'Error fetching projects', 'error' => $e->getMessage()], 500);
-        }
-    }
+    //     try {
+    //         $projects = Project::where('company_name', $request->company_name)->get();
+    //         return response()->json(['projects' => $projects], 200);
+    //     } catch (\Exception $e) {
+    //         Log::error('Error fetching projects: ', ['error' => $e->getMessage()]);
+    //         return response()->json(['message' => 'Error fetching projects', 'error' => $e->getMessage()], 500);
+    //     }
+    // }
 
     // Method to complete tracking
     public function completeTracking($trackingId)
