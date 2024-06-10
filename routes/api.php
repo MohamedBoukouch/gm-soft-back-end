@@ -7,11 +7,10 @@ use App\Http\Controllers\Director_Services_Controller;
 use App\Http\Controllers\Emplyee_Services_Controller;
 use App\Http\Controllers\VacationController;
 use App\Http\Controllers\ResourceController;
-use App\Http\Controllers\TimeTrackingController;
 use App\Http\Controllers\OrderDeplacmentController;
-use App\Http\Controllers\SentFeuilleController;
-use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\TimesheetController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TrackingController;
 
 
 
@@ -112,9 +111,6 @@ Route::put('/updatePaymentStatus/{paymentId}', [ResourceController::class, 'upda
 //paiemnt mode
 Route::post('/addPayment_modes', [ResourceController::class, 'addPaymentMode']);
 Route::get('/fetchPayment_modes', [ResourceController::class, 'fetchPaymentModes']);
-// Route::post('/deletePayment_modes/delete/{id}', [ResourceController::class, 'deletePaymentMode']);
-// Route::delete('/deletepayment_modes/{id}', [ResourceController::class, 'deletePaymentMode'])->name('payment_modes.delete');
-// Route::post('/payment_modes/delete/{id}', 'PaymentModeController@deletePaymentMode');
 Route::delete('/deletePayment_modes/{id}',[ResourceController::class, 'deletePaymentMode']);
 
 
@@ -134,22 +130,25 @@ Route::get('/checksentRH', [TimesheetController::class, 'checkTimesheetStatus'])
 Route::post('/fetchTimesheetDetail', [TimesheetController::class, 'fetchTimesheetDetail']);
 
 
-//for new Tracking 2
+//dashboard
+Route::get('/projects', [DashboardController::class, 'getProjects']);
+Route::get('/vacation-requests', [DashboardController::class, 'getPendingVacationRequests']);
+Route::post('/vacation-requests/{id}/approve', [DashboardController::class, 'approveVacationRequest']);
+Route::post('/vacation-requests/{id}/reject', [DashboardController::class, 'rejectVacationRequest']);
+Route::get('/vacation-counts', [DashboardController::class, 'getVacationCounts']);
+Route::get('/employee-stats', [DashboardController::class, 'getEmployeeStats']);
+Route::get('/employees-by-role/{role}', [DashboardController::class, 'getEmployeesByRole']);
+Route::get('/order-stats', [DashboardController::class, 'getOrderStats']);
+Route::get('/tracking/employees-by-status', [DashboardController::class, 'getEmployeesByStatus']);
+
+
+
 Route::post('/startTracking', [TrackingController::class, 'startTracking']);
 Route::post('/pauseTracking/{trackingId}', [TrackingController::class, 'pauseTracking']);
 Route::post('/resumeTracking/{trackingId}', [TrackingController::class, 'resumeTracking']);
 Route::post('/stopTracking/{trackingId}', [TrackingController::class, 'stopTracking']);
 Route::post('/updateTrackingRemarks/{trackingId}', [TrackingController::class, 'updateTrackingRemarks']);
-Route::post('/startPause/{trackingId}', [TrackingController::class, 'startPause']);
-Route::post('/endPause/{trackingId}', [TrackingController::class, 'endPause']);
-
-
-
-
-//dashboard
-Route::get('/order-stats', [OrderDeplacmentController::class, 'getOrderStats']);
-Route::get('/vacation-requests', [VacationController::class, 'getPendingVacationRequests']);
-Route::post('/vacation-requests/{requestId}/approve', [VacationController::class, 'approveVacationRequest']);
-Route::post('/vacation-requests/{requestId}/reject', [VacationController::class, 'rejectVacationRequest']);
-Route::post('/getEmployeeStats', [Director_Services_Controller::class, 'getEmployeeStats']);
-Route::get('/projects', [Director_Services_Controller::class, 'getProjects']);
+Route::post('/updateTrackingStatus/{trackingId}', [TrackingController::class, 'updateTrackingStatus']);
+// Route::post('/fetchProjects', [TrackingController::class, 'fetchProjects']);
+Route::post('/completeTracking/{trackingId}', [TrackingController::class, 'completeTracking']);
+// Route::post('/fetchProjects', [TrackingController::class, 'fetchProjects']);
