@@ -7,6 +7,7 @@ use App\Models\Tracking;
 // use App\Models\Tracking;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Models\User; // Import the User model class
 
 class TrackingController extends Controller
 {
@@ -91,33 +92,35 @@ class TrackingController extends Controller
     }
 
     // Method to stop tracking
-    public function stopTracking(Request $request, $trackingId)
-    {
-        Log::info('Received stopTracking request', array_merge($request->all(), ['trackingId' => $trackingId]));
+// Method to stop tracking
+public function stopTracking(Request $request, $trackingId)
+{
+    Log::info('Received stopTracking request', array_merge($request->all(), ['trackingId' => $trackingId]));
 
-        $request->validate([
-            'end_time' => 'required|date',
-            'total_pause_hours' => 'required|numeric',
-        ]);
+    $request->validate([
+        'end_time' => 'required|date',
+        'total_pause_hours' => 'required|numeric',
+    ]);
 
-        try {
-            $tracking = Tracking::find($trackingId);
-            if (!$tracking) {
-                return response()->json(['message' => 'Tracking not found'], 404);
-            }
-
-            $tracking->end_time = Carbon::parse($request->end_time);
-            $totalWorkedDuration = $tracking->end_time->diffInSeconds($tracking->start_time) - ($request->total_pause_hours * 3600);
-            $tracking->total_worked_hours = $totalWorkedDuration / 3600;
-            $tracking->status = 'Finished';
-            $tracking->save();
-
-            return response()->json(['message' => 'Tracking stopped successfully', 'tracking' => $tracking], 200);
-        } catch (\Exception $e) {
-            Log::error('Error stopping tracking: ', ['error' => $e->getMessage()]);
-            return response()->json(['message' => 'Error stopping tracking', 'error' => $e->getMessage()], 500);
+    try {
+        $tracking = Tracking::find($trackingId);
+        if (!$tracking) {
+            return response()->json(['message' => 'Tracking not found'], 404);
         }
+
+        $tracking->end_time = Carbon::parse($request->end_time);
+        $totalWorkedDuration = $tracking->end_time->diffInSeconds($tracking->start_time) - ($request->total_pause_hours * 3600);
+        $tracking->total_worked_hours = max(0, $totalWorkedDuration / 3600); // Ensure non-negative value
+        $tracking->status = 'Finished';
+        $tracking->save();
+
+        return response()->json(['message' => 'Tracking stopped successfully', 'tracking' => $tracking], 200);
+    } catch (\Exception $e) {
+        Log::error('Error stopping tracking: ', ['error' => $e->getMessage()]);
+        return response()->json(['message' => 'Error stopping tracking', 'error' => $e->getMessage()], 500);
     }
+}
+
 
     // Method to update tracking remarks
     public function updateTrackingRemarks(Request $request, $trackingId)
@@ -207,4 +210,23 @@ class TrackingController extends Controller
             return response()->json(['message' => 'Error completing tracking', 'error' => $e->getMessage()], 500);
         }
     }
+    // app/Http/Controllers/EmployeeController.php
+
+    public function getEmployeeWorkedHours()
+
+    {
+        $employees = User::where('role', 'employee') // Adjust role as necessary
+            ->get()
+            ->map(function($user) {
+                return [
+                    'name' => $user->firstname . ' ' . $user->lastname,
+                    'total_worked_hours' => $user->worked_hours, // Adjust field name accordingly
+                ];
+            });
+
+        return response()->json([
+            'employees' => $employees,
+        ]);
+    }
+
 }

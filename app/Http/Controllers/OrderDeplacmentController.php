@@ -285,37 +285,19 @@ public function OrdersFini()
 }
 
 //Statistic 
-public function getOrderStatistics()
-{
-    try {
-        // Count total orders
-        $totalOrders = OrderDeplacment::count();
+public function getOrderStatistics() {
+    // Example of division, make sure to check for zero
+    $someValue = 100; // Example value
+    $anotherValue = 0; // Example zero value causing division by zero
 
-        // Count finished orders
-        $finishedOrders = OrderDeplacment::where('mession_verify', 1)->count();
-
-        // Count not accepted orders
-        $notAcceptedOrders = OrderDeplacment::where('is_accepte', 0)->count();
-
-        // Count verified orders
-        $verifiedOrders = OrderDeplacment::where('localisation_verify', '!=', null)->count();
-
-        // Calculate percentages
-        $percentageFinished = ($finishedOrders / $totalOrders) * 100;
-        $percentageNotAccepted = ($notAcceptedOrders / $totalOrders) * 100;
-        $percentageVerified = ($verifiedOrders / $totalOrders) * 100;
-
-        // Return the percentages
-        return response()->json([
-            'percentage_finished' => $percentageFinished,
-            'percentage_not_accepted' => $percentageNotAccepted,
-            'percentage_verified' => $percentageVerified,
-        ], 200);
-    } catch (\Exception $e) {
-        // Return an error response if an exception occurs
-        return response()->json(['error' => 'Failed to fetch order statistics'], 500);
+    if ($anotherValue == 0) {
+        // Handle the case where the denominator is zero
+        throw new \Exception('Division by zero');
     }
+
+    $result = $someValue / $anotherValue; // Example division
+
+    // Return result or perform necessary operations
+    return response()->json(['result' => $result]);
 }
-
-
 }

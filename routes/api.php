@@ -152,3 +152,4 @@ Route::post('/updateTrackingStatus/{trackingId}', [TrackingController::class, 'u
 // Route::post('/fetchProjects', [TrackingController::class, 'fetchProjects']);
 Route::post('/completeTracking/{trackingId}', [TrackingController::class, 'completeTracking']);
 // Route::post('/fetchProjects', [TrackingController::class, 'fetchProjects']);
+Route::post('/getEmployeeWorkedHours', [TrackingController::class, 'getEmployeeWorkedHours']);
