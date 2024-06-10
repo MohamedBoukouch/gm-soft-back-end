@@ -7,12 +7,10 @@ use App\Http\Controllers\Director_Services_Controller;
 use App\Http\Controllers\Emplyee_Services_Controller;
 use App\Http\Controllers\VacationController;
 use App\Http\Controllers\ResourceController;
-use App\Http\Controllers\TimeTrackingController;
 use App\Http\Controllers\OrderDeplacmentController;
-use App\Http\Controllers\SentFeuilleController;
-use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\TimesheetController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TrackingController;
 
 
 
@@ -60,6 +58,8 @@ Route::post('/TimeExite', [Emplyee_Services_Controller::class, 'TimeExite']);
 Route::post('/AddVacation', [VacationController::class, 'AddVacation']);
 Route::post('/employeeVacations', [VacationController::class, 'employeeVacations']);
 Route::post('/updateVacation', [VacationController::class, 'updateVacation']);
+Route::get('/employeVacations', [VacationController::class, 'employeeVacations']);
+Route::get('/vacations/{id}', [VacationController::class, 'fetchVacationDetails']);
 
 
 
@@ -111,9 +111,6 @@ Route::put('/updatePaymentStatus/{paymentId}', [ResourceController::class, 'upda
 //paiemnt mode
 Route::post('/addPayment_modes', [ResourceController::class, 'addPaymentMode']);
 Route::get('/fetchPayment_modes', [ResourceController::class, 'fetchPaymentModes']);
-// Route::post('/deletePayment_modes/delete/{id}', [ResourceController::class, 'deletePaymentMode']);
-// Route::delete('/deletepayment_modes/{id}', [ResourceController::class, 'deletePaymentMode'])->name('payment_modes.delete');
-// Route::post('/payment_modes/delete/{id}', 'PaymentModeController@deletePaymentMode');
 Route::delete('/deletePayment_modes/{id}',[ResourceController::class, 'deletePaymentMode']);
 
 
@@ -122,18 +119,6 @@ Route::delete('/deletePayment_modes/{id}',[ResourceController::class, 'deletePay
 Route::post('/addInvoices',[ResourceController::class, 'addInvoices']);
 Route::get('/fetchInvoices',[ResourceController::class, 'fetchInvoices']);
 Route::delete('/deleteInvoice/{id}', [ResourceController::class, 'deleteInvoice']);
-
-
-
-//weklly Timesheet
-Route::post('/save-time-data', [TimeTrackingController::class, 'saveTimeData']);
-Route::get('/projects', [TimeTrackingController::class, 'getProjects']);
-Route::get('/get-total-regular-time', [TimeTrackingController::class, 'getTotalRegularTime']);
-Route::get('/sum_regular', [TimeTrackingController::class, 'TotalRegularTime']);
-Route::delete('/delete_project', [TimeTrackingController::class, 'deleteProject']);
-Route::post('/sent-feuille', [SentFeuilleController::class, 'store']);
-Route::get('check-feuille', [SentFeuilleController::class, 'checkFeuille']);
-
 
 
 
@@ -157,10 +142,6 @@ Route::get('/order-stats', [DashboardController::class, 'getOrderStats']);
 Route::get('/tracking/employees-by-status', [DashboardController::class, 'getEmployeesByStatus']);
 
 
-//for new Tracking 2
-
-
-// use App\Http\Controllers\TrackingController;
 
 Route::post('/startTracking', [TrackingController::class, 'startTracking']);
 Route::post('/pauseTracking/{trackingId}', [TrackingController::class, 'pauseTracking']);

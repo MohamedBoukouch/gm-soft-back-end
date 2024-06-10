@@ -17,8 +17,6 @@ class AuthController extends Controller
     // Create a user account
     public function createCompte(Request $request)
     {
-
-
         $request->validate([
             'firstname' => 'required',
             'lastname' => 'required',

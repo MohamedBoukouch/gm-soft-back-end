@@ -84,7 +84,19 @@ class VacationController extends Controller
         // Return a JSON response
         return response()->json(['vacations' => $vacations], 200);
     }
-    
+    public function fetchVacationDetails($id)
+    {
+        try {
+            // Find the vacation by ID
+            $vacation = Vacation::findOrFail($id);
+
+            // Return the vacation details
+            return response()->json($vacation);
+        } catch (\Exception $e) {
+            // Handle any errors that occur
+            return response()->json(['error' => 'Vacation not found'], 404);
+        }
+    }
 
 
     //DROP VACATION for Employee
@@ -174,6 +186,8 @@ public function fetchUserByEmployeeId($userId)
             return response()->json(['error' => 'User not found'], 404);
         }
     }
+
+
 
 
 // public function fetchUserByEmployeeId($employeeId)
