@@ -17,7 +17,7 @@ class Director_Services_Controller extends Controller
     {
         $added_by = $request->added_by;
     
-        $director = User::where('id', $added_by)->where('role', 'Derictor')->first(); // Fetch the director user
+        $director = User::where('id', $added_by)->where('role', 'Derictor')->first(); //where role is Director
     
         if ($director) {
 

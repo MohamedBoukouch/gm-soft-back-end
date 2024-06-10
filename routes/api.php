@@ -12,6 +12,7 @@ use App\Http\Controllers\OrderDeplacmentController;
 use App\Http\Controllers\SentFeuilleController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\TimesheetController;
+use App\Http\Controllers\DashboardController;
 
 
 
@@ -136,13 +137,24 @@ Route::get('check-feuille', [SentFeuilleController::class, 'checkFeuille']);
 
 
 
-
 //Daily Timesheet
 Route::post('/savetimesheets', [TimesheetController::class, 'saveTimesheet']);
 Route::post('/sentTimesheet', [TimesheetController::class, 'sentTimesheet']);
 Route::post('/checksent', [TimesheetController::class, 'checkTimesheetStatus']);
 Route::get('/checksentRH', [TimesheetController::class, 'checkTimesheetStatus']);
 Route::post('/fetchTimesheetDetail', [TimesheetController::class, 'fetchTimesheetDetail']);
+
+
+//dashboard
+Route::get('/projects', [DashboardController::class, 'getProjects']);
+Route::get('/vacation-requests', [DashboardController::class, 'getPendingVacationRequests']);
+Route::post('/vacation-requests/{id}/approve', [DashboardController::class, 'approveVacationRequest']);
+Route::post('/vacation-requests/{id}/reject', [DashboardController::class, 'rejectVacationRequest']);
+Route::get('/vacation-counts', [DashboardController::class, 'getVacationCounts']);
+Route::get('/employee-stats', [DashboardController::class, 'getEmployeeStats']);
+Route::get('/employees-by-role/{role}', [DashboardController::class, 'getEmployeesByRole']);
+Route::get('/order-stats', [DashboardController::class, 'getOrderStats']);
+Route::get('/tracking/employees-by-status', [DashboardController::class, 'getEmployeesByStatus']);
 
 
 //for new Tracking 2

@@ -215,4 +215,25 @@ public function fetchUserByEmployeeId($userId)
     //     // Return the user data
     //     return response()->json($user);
     // }
+    public function getPendingVacationRequests()
+{
+    $requests = Vacation::where('status', 'pending')->get();
+    return response()->json(['requests' => $requests]);
+}
+
+public function approveVacationRequest($requestId)
+{
+    $request = Vacation::findOrFail($requestId);
+    $request->status = 'approved';
+    $request->save();
+    return response()->json(['message' => 'Request approved successfully']);
+}
+
+public function rejectVacationRequest($requestId)
+{
+    $request = Vacation::findOrFail($requestId);
+    $request->status = 'rejected';
+    $request->save();
+    return response()->json(['message' => 'Request rejected successfully']);
+}
 }
